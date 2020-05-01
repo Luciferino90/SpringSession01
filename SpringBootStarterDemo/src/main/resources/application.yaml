@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: springbootstartdemo
+
+service:
+  client:
+    enabled: false
+    url: urlone
+    username: userone
+    password: passone
