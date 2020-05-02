@@ -16,6 +16,7 @@
 
 	<properties>
 		<java.version>14</java.version>
+		<aspectjtools.version>1.9.5</aspectjtools.version>
 	</properties>
 
 	<dependencies>
@@ -39,6 +40,11 @@
 					<artifactId>junit-vintage-engine</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjtools</artifactId>
+			<version>${aspectjtools.version}</version>
 		</dependency>
 	</dependencies>
 

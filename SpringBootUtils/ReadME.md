@@ -2,11 +2,11 @@ AlternativeJdkIdGenerator
 AntPathMatcher
 AntPathMatcher.AntPathStringMatcher
 AntPathMatcher.AntPatternComparator
-Assert
+Assert                                              V
 AutoPopulatingList<E>
-Base64Utils
-ClassUtils
-CollectionUtils
+Base64Utils                                         V
+ClassUtils                                          V
+CollectionUtils                                     V
 CommonsLogWriter
 CompositeIterator<E>
 ConcurrencyThrottleSupport
@@ -17,8 +17,8 @@ DefaultPropertiesPersister
 DigestUtils
 ExceptionTypeFilter
 FastByteArrayOutputStream
-FileCopyUtils
-FileSystemUtils
+FileCopyUtils                                       V
+FileSystemUtils                                     V
 InstanceFilter<T>
 JdkIdGenerator
 LinkedCaseInsensitiveMap<V>
@@ -27,20 +27,20 @@ MethodInvoker
 MimeType
 MimeType.SpecificityComparator<T extends MimeType>
 MimeTypeUtils
-NumberUtils
+NumberUtils                                         V
 ObjectUtils
 PatternMatchUtils
 PropertyPlaceholderHelper
-ReflectionUtils
+ReflectionUtils                                     V
 ResizableByteArrayOutputStream
-ResourceUtils
-SerializationUtils
+ResourceUtils                                       V
+SerializationUtils                                  X
 SimpleIdGenerator
 SimpleRouteMatcher
 SocketUtils
 StopWatch
 StopWatch.TaskInfo
-StreamUtils
+StreamUtils                                         V
 StringUtils
-SystemPropertyUtils
-TypeUtils
+SystemPropertyUtils                                 V
+TypeUtils                                           
