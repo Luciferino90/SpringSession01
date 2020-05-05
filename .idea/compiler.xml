@@ -7,16 +7,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="springbootutils" />
         <module name="SpringBootBuilder" />
         <module name="springbootsession" />
+        <module name="springbootutils" />
         <module name="springbootthymeleaf" />
+        <module name="springbootstarterapp" />
         <module name="SpringBootStarterDemo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="SpringBootBuilder" target="14" />
       <module name="springbootsession" target="14" />
+      <module name="springbootstarterapp" target="14" />
       <module name="SpringBootStarterDemo" target="14" />
       <module name="springbootthymeleaf" target="14" />
       <module name="springbootutils" target="14" />
@@ -27,6 +29,7 @@
       <module name="SpringBootBuilder" options="-parameters" />
       <module name="SpringBootStarterDemo" options="-parameters" />
       <module name="springbootsession" options="-parameters" />
+      <module name="springbootstarterapp" options="-parameters" />
       <module name="springbootthymeleaf" options="-parameters" />
       <module name="springbootutils" options="-parameters" />
     </option>
