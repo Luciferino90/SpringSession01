@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/SpringBootBuilder/SpringBootBuilder.iml" filepath="$PROJECT_DIR$/SpringBootBuilder/SpringBootBuilder.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringBootStarterDemo/SpringBootStarterDemo.iml" filepath="$PROJECT_DIR$/SpringBootStarterDemo/SpringBootStarterDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/SpringSession01.iml" filepath="$PROJECT_DIR$/.idea/SpringSession01.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JavaExercise/javaexercise.iml" filepath="$PROJECT_DIR$/JavaExercise/javaexercise.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringBootSession/springbootsession.iml" filepath="$PROJECT_DIR$/SpringBootSession/springbootsession.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringBootStarterApp/springbootstarterapp.iml" filepath="$PROJECT_DIR$/SpringBootStarterApp/springbootstarterapp.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringBootThymeleaf/springbootthymeleaf.iml" filepath="$PROJECT_DIR$/SpringBootThymeleaf/springbootthymeleaf.iml" />
