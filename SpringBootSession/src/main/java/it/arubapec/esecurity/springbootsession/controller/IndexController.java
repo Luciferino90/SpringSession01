@@ -55,8 +55,6 @@ public class IndexController {
     public String bean(HttpServletRequest request, Model model){
         if (arubaSessionBean == null)
             throw new RuntimeException("No bean defined");
-        if (arubaSessionBean.getCustomSession() == null)
-            arubaSessionBean.setCustomSession(0);
         int customsession = arubaSessionBean.getCustomSession() + 1;
 
         System.out.println("CustomSession: " + arubaSessionBean.getCustomSession());
