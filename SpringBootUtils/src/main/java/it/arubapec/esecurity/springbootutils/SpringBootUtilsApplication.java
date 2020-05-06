@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.*;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -40,7 +39,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.StreamSupport;
 
 @Slf4j
 @SpringBootApplication
@@ -93,8 +91,13 @@ public class SpringBootUtilsApplication {
 			filesystemUtils();
 			collectionUtils();
 			numberUtils();
+			stringUtils();
 			SpringApplication.exit(context, () -> 0);
 		};
+	}
+
+	private void stringUtils() {
+		//StringUtils
 	}
 
 	private void numberUtils() {

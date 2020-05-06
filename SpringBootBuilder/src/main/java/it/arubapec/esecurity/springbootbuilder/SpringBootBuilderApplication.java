@@ -1,6 +1,5 @@
 package it.arubapec.esecurity.springbootbuilder;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
@@ -9,8 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
+@Slf4j
 @SpringBootApplication
 public class SpringBootBuilderApplication {
 
@@ -22,18 +21,10 @@ public class SpringBootBuilderApplication {
 				.run(args);
 	}
 
-}
 
-@Slf4j
-@Component
-@RequiredArgsConstructor
-class Runner {
-
-	private final ApplicationContext applicationContext;
-
-	@Bean public CommandLineRunner run() {
+	@Bean public CommandLineRunner run(ApplicationContext applicationContext) {
 		return args -> {
-			log.info("Starter");
+			log.info("Started");
 			SpringApplication.exit(applicationContext, () -> 0);
 		};
 	}

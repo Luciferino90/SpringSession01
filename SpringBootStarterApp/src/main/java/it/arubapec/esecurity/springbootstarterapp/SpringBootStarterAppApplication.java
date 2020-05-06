@@ -15,14 +15,8 @@ public class SpringBootStarterAppApplication {
 		SpringApplication.run(SpringBootStarterAppApplication.class, args);
 	}
 
-	@Autowired(required = false)
-	private ClientTemplate client;
-
-	@Autowired
-	private ApplicationContext context;
-
 	@Bean
-	CommandLineRunner run(){
+	CommandLineRunner run(ApplicationContext context, ClientTemplate client){
 		return args -> {
 			client.login();
 			SpringApplication.exit(context, () -> 0);

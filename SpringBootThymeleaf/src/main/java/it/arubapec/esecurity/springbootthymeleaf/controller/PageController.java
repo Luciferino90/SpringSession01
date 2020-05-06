@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 public class PageController {
 
     @GetMapping("/international")
-    public String getInternationalPage(HttpSession session) {
+    public String getInternationalPage() {
         return "international";
     }
 
