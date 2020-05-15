@@ -1,6 +1,7 @@
 package it.usuratonkachi.staticinjection.utils;
 
 import it.usuratonkachi.staticinjection.bean.RequestBean;
+import it.usuratonkachi.staticinjection.wrapper.Wrapper;
 import lombok.experimental.UtilityClass;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -12,7 +13,7 @@ import java.util.Optional;
 @UtilityClass
 public class StaticUtils {
 
-    public String requestValue(){
+    public Wrapper requestValue(){
         return Optional.ofNullable(RequestContextHolder.getRequestAttributes())
                 .filter(requestAttributes -> ServletRequestAttributes.class.isAssignableFrom(requestAttributes.getClass()))
                 .map(requestAttributes -> ((ServletRequestAttributes) requestAttributes))
