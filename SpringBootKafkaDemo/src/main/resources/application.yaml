@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: kafka-poc
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+        bindings:
+          notification-in:
+            consumer:
+              ack-each-record: true
+              configuration:
+                concurrency: 1
+                max.poll.records: 1
+                max.poll.interval.ms: 300000
+                auto.offset.reset: earliest
+      bindings:
+        notification-in:
+          group: ${spring.application.name}
+          destination: notification
+          contentType: application/json
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect

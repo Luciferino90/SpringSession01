@@ -10,15 +10,19 @@
         <module name="springbootthymeleaf" />
         <module name="springbootsession" />
         <module name="springbootutils" />
-        <module name="SpringBootStarterDemo" />
-        <module name="javaexercise" />
         <module name="springbootstarterapp" />
+        <module name="javaexercise" />
+        <module name="kafka-demo" />
+        <module name="SpringBootStarterDemo" />
         <module name="SpringBootBuilder" />
+        <module name="SpringBootKafkaDemo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="javaexercise" target="14" />
+      <module name="kafka-demo" target="14" />
       <module name="SpringBootBuilder" target="14" />
+      <module name="SpringBootKafkaDemo" target="14" />
       <module name="springbootsession" target="14" />
       <module name="springbootstarterapp" target="14" />
       <module name="SpringBootStarterDemo" target="14" />
@@ -29,8 +33,10 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="SpringBootBuilder" options="-parameters" />
+      <module name="SpringBootKafkaDemo" options="-parameters" />
       <module name="SpringBootStarterDemo" options="-parameters" />
       <module name="javaexercise" options="-parameters" />
+      <module name="kafka-demo" options="-parameters" />
       <module name="springbootsession" options="-parameters" />
       <module name="springbootstarterapp" options="-parameters" />
       <module name="springbootthymeleaf" options="-parameters" />
