@@ -46,9 +46,17 @@ public class NotificationListener {
 		Context thymeleafContext = new Context();
 		thymeleafContext.setVariables(templateMap);
 
-		final String message = thymeleafTE.process("mail.html", thymeleafContext);
+		//final String message = thymeleafTE.process("mail.html", thymeleafContext);
 
-		System.out.println(message);
+		String template = "<h1> Ciao [[${username}]]</h1>\n" +
+				"<br>\n" +
+				"<h2> [[${subject}]] @ [[${date}]]</h2>\n";
+
+		final String messageString = thymeleafTE.process(template, thymeleafContext);
+
+		//System.out.println(message);
+		System.out.println("\n\n\n");
+		System.out.println(messageString);
 
 		log.info("Notification sent");
 
