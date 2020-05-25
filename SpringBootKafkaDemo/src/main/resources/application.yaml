@@ -18,7 +18,7 @@ spring:
       bindings:
         notification-in:
           group: ${spring.application.name}
-          destination: notification
+          destination: notification-internal
           contentType: application/json
 
   datasource:

@@ -1,7 +1,13 @@
 package it.usuratonkachi.springsession.kafkademo.listener;
 
 import it.usuratonkachi.springsession.kafkademo.config.KafkaChannels;
+import it.usuratonkachi.springsession.kafkademo.datasource.entity.Template;
+import it.usuratonkachi.springsession.kafkademo.datasource.entity.TemplateEventConfig;
+import it.usuratonkachi.springsession.kafkademo.datasource.entity.TemplateField;
 import it.usuratonkachi.springsession.kafkademo.datasource.entity.User;
+import it.usuratonkachi.springsession.kafkademo.datasource.repository.TemplateEventConfigRepository;
+import it.usuratonkachi.springsession.kafkademo.datasource.repository.TemplateFieldRepository;
+import it.usuratonkachi.springsession.kafkademo.datasource.repository.TemplateRepository;
 import it.usuratonkachi.springsession.kafkademo.datasource.repository.UserRepository;
 import it.usuratonkachi.springsession.kafkademo.dto.ExampleMessage;
 import lombok.RequiredArgsConstructor;
@@ -11,13 +17,16 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.integration.annotation.Payloads;
 import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.annotation.PostConstruct;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -26,55 +35,45 @@ public class NotificationListener {
 
 	private final UserRepository userRepository;
 	private final SpringTemplateEngine thymeleafTE;
+	private final TemplateEventConfigRepository templateEventConfigRepository;
+	private final TemplateFieldRepository templateFieldRepository;
 
 	@SneakyThrows
 	@StreamListener(KafkaChannels.NOTIFICATION_TOPIC_IN)
 	public void notificationListener(@Payloads ExampleMessage message, @Headers Map<String, Object> map) {
 		final String username = message.getUsername();
 		userRepository.findByUsernameAndNotificationEnabled(username, true)
-				.ifPresent(user -> sendNotification(user, message.getTemplateMap()));
+				.ifPresent(user -> sendTxtNotification(user, message));
 	}
 
-	private void sendNotification(User user, Map<String, Object> templateMap){
+	private void  sendTxtNotification(User user, ExampleMessage message) {
 		log.info("Sending notification to user " + user.getUsername());
-		templateMap = Map.of(
-				"subject", "Template di prova",
+		message.setTemplateMap(Map.of(
 				"date", ZonedDateTime.now(),
-				"username", user.getUsername()
-		);
+				"username", user.getUsername(),
+				"email_from", "test.sender@pec.it",
+				"USER_PEC", user.getUsername()
+		));
 
 		Context thymeleafContext = new Context();
-		thymeleafContext.setVariables(templateMap);
+		thymeleafContext.setVariables(message.getTemplateMap());
 
-		//final String message = thymeleafTE.process("mail.html", thymeleafContext);
+		TemplateEventConfig templateEventConfig = templateEventConfigRepository.findByEventTypeId(message.getEventTypeId())
+				.orElseThrow(() -> new RuntimeException("No template found for id " + message.getEventTypeId()));
 
-		String template = "<h1> Ciao [[${username}]]</h1>\n" +
-				"<br>\n" +
-				"<h2> [[${subject}]] @ [[${date}]]</h2>\n";
+		if (!templateEventConfig.getNotificationEnabled())
+			return;
 
-		final String messageString = thymeleafTE.process(template, thymeleafContext);
-
-		//System.out.println(message);
-		System.out.println("\n\n\n");
-		System.out.println(messageString);
+		templateFieldRepository.findByTemplateId(templateEventConfig.getTemplateId())
+				.stream()
+				.map(templateField -> {
+					String res = thymeleafTE.process(templateField.getValue(), thymeleafContext);
+					System.out.println(String.format("%s: %s", templateField.getName(), res));
+					return res;
+				})
+		.collect(Collectors.toList());
 
 		log.info("Notification sent");
-
-	}
-
-	@PostConstruct
-	public void init(){
-		User user = new User();
-		user.setId(UUID.randomUUID().toString());
-		user.setNotificationEnabled(true);
-		user.setUsername("luca.fanciullini@pec.it");
-		userRepository.saveAndFlush(user);
-
-		User userTwo = new User();
-		userTwo.setId(UUID.randomUUID().toString());
-		userTwo.setNotificationEnabled(false);
-		userTwo.setUsername("luca.fanciulli@pec.it");
-		userRepository.saveAndFlush(userTwo);
 	}
 
 }
