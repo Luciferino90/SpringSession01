@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: kafka-poc
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+        bindings:
+          mail-in:
+            consumer:
+              ack-each-record: true
+              configuration:
+                concurrency: 1
+                max.poll.records: 1
+                max.poll.interval.ms: 300000
+                auto.offset.reset: earliest
+      bindings:
+        mail-in:
+          group: ${spring.application.name}
+          destination: mail-internal
+          contentType: application/json
+
+  mail:
+    default-encoding: UTF-8
+    host:
+    password:
+    port: 25
+    protocol: smtp
+    username:
