@@ -30,13 +30,13 @@ public class MockService {
         User user = new User();
         user.setId(UUID.randomUUID().toString());
         user.setNotificationEnabled(true);
-        user.setUsername("luca.fanciullini@pec.it");
+        user.setUsername("luca.fanciullini@staff.aruba.it");
         userRepository.saveAndFlush(user);
 
         User userTwo = new User();
         userTwo.setId(UUID.randomUUID().toString());
         userTwo.setNotificationEnabled(false);
-        userTwo.setUsername("luca.fanciulli@pec.it");
+        userTwo.setUsername("foo@fighter.it");
         userRepository.saveAndFlush(userTwo);
 
         Template template = new Template();
