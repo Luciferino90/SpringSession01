@@ -30,7 +30,7 @@ public class MockService {
         User user = new User();
         user.setId(UUID.randomUUID().toString());
         user.setNotificationEnabled(true);
-        user.setUsername("luca.fanciullini@staff.aruba.it");
+        user.setUsername("");
         userRepository.saveAndFlush(user);
 
         User userTwo = new User();
