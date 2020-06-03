@@ -13,6 +13,6 @@ public interface KafkaChannels {
 	SubscribableChannel notificationInputChannel();
 
 	@Output(MAIL_OUT)
-	SubscribableChannel mailOutputChannel();
+	SubscribableChannel mailOutChannel();
 
 }

@@ -20,7 +20,6 @@ spring:
           group: ${spring.application.name}
           destination: mail-internal
           contentType: application/json
-
   mail:
     default-encoding: UTF-8
     host:
