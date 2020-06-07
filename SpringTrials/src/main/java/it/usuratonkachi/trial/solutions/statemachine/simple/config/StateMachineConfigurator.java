@@ -1,6 +1,5 @@
-package it.usuratonkachi.trial.solutions.statemachine.config;
+package it.usuratonkachi.trial.solutions.statemachine.simple.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.config.EnableStateMachine;
@@ -12,7 +11,7 @@ import org.springframework.statemachine.config.builders.StateMachineTransitionCo
 import java.util.EnumSet;
 
 @Configuration
-@EnableStateMachine
+//state@EnableStateMachine
 public class StateMachineConfigurator extends EnumStateMachineConfigurerAdapter<State, Event> {
 
     //@Bean

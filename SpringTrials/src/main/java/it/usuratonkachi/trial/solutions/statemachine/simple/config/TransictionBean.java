@@ -1,4 +1,4 @@
-package it.usuratonkachi.trial.solutions.statemachine.config;
+package it.usuratonkachi.trial.solutions.statemachine.simple.config;
 
 import org.springframework.statemachine.annotation.OnTransition;
 import org.springframework.statemachine.annotation.WithStateMachine;

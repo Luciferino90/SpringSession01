@@ -1,7 +1,6 @@
 package it.usuratonkachi.trial;
 
-import it.usuratonkachi.trial.solutions.GenericRunner;
-import it.usuratonkachi.trial.solutions.statemachine.StateMachineRunner;
+import it.usuratonkachi.trial.solutions.statemachine.medium.StateMachineApplication;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,7 +15,7 @@ public class TrialApplication {
 		SpringApplication.run(TrialApplication.class, args);
 	}
 
-	private final StateMachineRunner stateMachineRunner;
+	private final StateMachineApplication stateMachineRunner;
 
 	@Bean
 	CommandLineRunner runner() {

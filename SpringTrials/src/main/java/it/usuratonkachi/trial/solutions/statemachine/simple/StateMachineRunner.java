@@ -1,14 +1,14 @@
-package it.usuratonkachi.trial.solutions.statemachine;
+package it.usuratonkachi.trial.solutions.statemachine.simple;
 
 import it.usuratonkachi.trial.solutions.GenericRunner;
-import it.usuratonkachi.trial.solutions.statemachine.config.Event;
-import it.usuratonkachi.trial.solutions.statemachine.config.State;
+import it.usuratonkachi.trial.solutions.statemachine.simple.config.Event;
+import it.usuratonkachi.trial.solutions.statemachine.simple.config.State;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 @RequiredArgsConstructor
 public class StateMachineRunner implements GenericRunner {
 
