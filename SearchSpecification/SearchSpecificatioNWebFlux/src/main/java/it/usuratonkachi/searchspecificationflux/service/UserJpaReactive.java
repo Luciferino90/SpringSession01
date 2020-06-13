@@ -1,9 +1,8 @@
 package it.usuratonkachi.searchspecificationflux.service;
 
-import it.usuratonkachi.searchspecificationflux.domain.mongo.entity.Company;
 import it.usuratonkachi.searchspecificationflux.domain.mysql.entity.UserJpa;
-import it.usuratonkachi.searchspecificationflux.domain.mysql.repository.CompanyJpaRepository;
 import it.usuratonkachi.searchspecificationflux.domain.mysql.repository.UserJpaRepository;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,10 +16,11 @@ import reactor.util.function.Tuples;
 @RequiredArgsConstructor
 public class UserJpaReactive {
 
+    @Getter
     private final UserJpaRepository userJpaRepository;
 
     public Mono<UserJpa> findByUserid(String userid) {
-        return Mono.justOrEmpty(userJpaRepository.findByUserid(userid));
+        return Mono.justOrEmpty(userJpaRepository.findByUserId(userid));
     }
 
     public Mono<Tuple3<Long, Pageable, Flux<UserJpa>>> findByUsernameLike(String username, Pageable pageable){

@@ -8,14 +8,13 @@ import it.usuratonkachi.searchspecificationflux.domain.mysql.repository.CompanyJ
 import it.usuratonkachi.searchspecificationflux.domain.mysql.repository.UserJpaRepository;
 import it.usuratonkachi.searchspecificationflux.dto.request.CompanyInsertRequestDto;
 import it.usuratonkachi.searchspecificationflux.dto.request.UserInsertRequestDto;
-import it.usuratonkachi.searchspecificationflux.dto.response.UserResponseDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.stream.IntStream;
@@ -34,7 +33,7 @@ public class BaseTest {
     @LocalServerPort
     private int port;
     private static final String url = "http://localhost";
-    protected static final WebClient webClient = WebClient.builder().build();
+    protected static final RestTemplate restTemplate = new RestTemplate();
     protected static int totalValue = 100;
 
     protected String getUrl(String uri){
@@ -55,7 +54,7 @@ public class BaseTest {
                     userInsertRequestDto.setDoubleid((long) i);
                     return userInsertRequestDto;
                 })
-                .forEach(user -> webClient.put().uri(getUrl("/mongo/user/insert")).body(user, UserResponseDto.class).exchange().block());
+                .forEach(user -> restTemplate.put(getUrl("/mongo/user/insert"), user));
         IntStream.rangeClosed(1, totalValue)
                 .mapToObj(i -> {
                     CompanyInsertRequestDto companyInsertRequestDto = new CompanyInsertRequestDto();
@@ -68,7 +67,7 @@ public class BaseTest {
                     companyInsertRequestDto.setDoubleid((long) i);
                     return companyInsertRequestDto;
                 })
-                .forEach(company -> webClient.put().uri(getUrl("/mongo/company/insert")).body(company, UserResponseDto.class).exchange().block());
+                .forEach(company -> restTemplate.put(getUrl("/mongo/company/insert"), company));
 
 
         IntStream.rangeClosed(1, totalValue)
@@ -83,7 +82,7 @@ public class BaseTest {
                     userInsertRequestDto.setDoubleid((long) i);
                     return userInsertRequestDto;
                 })
-                .forEach(user -> webClient.put().uri(getUrl("/mysql/user/insert")).body(user, UserResponseDto.class).exchange().block());
+                .forEach(user -> restTemplate.put(getUrl("/mysql/user/insert"), user));
         IntStream.rangeClosed(1, totalValue)
                 .mapToObj(i -> {
                     CompanyInsertRequestDto companyInsertRequestDto = new CompanyInsertRequestDto();
@@ -96,7 +95,7 @@ public class BaseTest {
                     companyInsertRequestDto.setDoubleid((long) i);
                     return companyInsertRequestDto;
                 })
-                .forEach(company -> webClient.put().uri(getUrl("/mysql/company/insert")).body(company, UserResponseDto.class).exchange().block());
+                .forEach(company -> restTemplate.put(getUrl("/mysql/company/insert"), company));
     }
 
     @AfterEach

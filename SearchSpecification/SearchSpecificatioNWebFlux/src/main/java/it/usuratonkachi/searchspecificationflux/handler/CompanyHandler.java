@@ -2,7 +2,7 @@ package it.usuratonkachi.searchspecificationflux.handler;
 
 import it.usuratonkachi.searchspecificationflux.dto.request.CompanyInsertRequestDto;
 import it.usuratonkachi.searchspecificationflux.dto.request.CompanyUpdateRequestDto;
-import it.usuratonkachi.searchspecificationflux.dto.response.CompanyResponseDto;
+import it.usuratonkachi.searchspecificationflux.dto.request.SearchCriteriaRequestDto;
 import it.usuratonkachi.searchspecificationflux.mapper.CompanyMapper;
 import it.usuratonkachi.searchspecificationflux.service.CompanyService;
 import it.usuratonkachi.searchspecificationflux.utils.ServerRequestUtils;
@@ -15,14 +15,24 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 import reactor.function.TupleUtils;
 
-import java.util.stream.Collectors;
-
 @Component
 @RequiredArgsConstructor
 public class CompanyHandler {
 
     private final CompanyMapper companyMapper;
     private final CompanyService companyService;
+
+    public Mono<ServerResponse> search(ServerRequest serverRequest) {
+        return serverRequest.bodyToMono(SearchCriteriaRequestDto.class)
+                .zipWith(Mono.just(ServerRequestUtils.extractPageable(serverRequest)))
+                .flatMap(TupleUtils.function(companyService::search))
+                .flatMap(TupleUtils.function((count, pageable, companyFlux) ->
+                        companyFlux.map(companyMapper::mapperEntityToResponseDto)
+                                .collectList()
+                                .map(companyResponseDtos -> new PageImpl<>(companyResponseDtos, pageable, count))
+                ))
+                .flatMap(company -> ServerResponse.ok().body(BodyInserters.fromValue(company)));
+    }
 
     public Mono<ServerResponse> getCompanyByBusinessNameLike(ServerRequest serverRequest) {
         return Mono.just(serverRequest.pathVariable("businessname"))

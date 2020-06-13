@@ -1,5 +1,6 @@
 package it.usuratonkachi.searchspecificationflux.handler;
 
+import it.usuratonkachi.searchspecificationflux.dto.request.SearchCriteriaRequestDto;
 import it.usuratonkachi.searchspecificationflux.dto.request.UserInsertRequestDto;
 import it.usuratonkachi.searchspecificationflux.dto.request.UserUpdateRequestDto;
 import it.usuratonkachi.searchspecificationflux.mapper.UserMapper;
@@ -20,6 +21,18 @@ public class UserHandler {
 
     private final UserMapper userMapper;
     private final UserService userService;
+
+    public Mono<ServerResponse> search(ServerRequest serverRequest) {
+        return serverRequest.bodyToMono(SearchCriteriaRequestDto.class)
+                .zipWith(Mono.just(ServerRequestUtils.extractPageable(serverRequest)))
+                .flatMap(TupleUtils.function(userService::search))
+                .flatMap(TupleUtils.function((count, pageable, companyFlux) ->
+                        companyFlux.map(userMapper::mapperEntityToResponseDto)
+                                .collectList()
+                                .map(companyResponseDtos -> new PageImpl<>(companyResponseDtos, pageable, count))
+                ))
+                .flatMap(company -> ServerResponse.ok().body(BodyInserters.fromValue(company)));
+    }
 
     public Mono<ServerResponse> getUserByUsernameLike(ServerRequest serverRequest) {
         return Mono.just(serverRequest.pathVariable("username"))

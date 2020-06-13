@@ -18,13 +18,13 @@ public class CompanyJpa implements Serializable {
 
     @Id
     private String id = UUID.randomUUID().toString();
-    private String companyid;
+    private String companyId;
     private String piva;
     private String businessname;
     private String address;
     private String cap;
-    private Date createddate;
-    private Integer sequentialid;
-    private Long doubleid;
+    private Date createdDate;
+    private Integer sequentialId;
+    private Long doubleId;
 
 }

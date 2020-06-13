@@ -15,13 +15,13 @@ public class UserJpa {
 
     @Id
     private String id = UUID.randomUUID().toString();
-    private String userid;
+    private String userId;
     private String username;
     private String firstname;
     private String lastname;
-    private String companyid;
-    private Date createddate;
-    private Integer sequentialid;
-    private Long doubleid;
+    private String companyId;
+    private Date createdDate;
+    private Integer sequentialId;
+    private Long doubleId;
 
 }

@@ -2,8 +2,13 @@ package it.usuratonkachi.searchspecificationflux.service;
 
 import it.usuratonkachi.searchspecificationflux.domain.mongo.entity.User;
 import it.usuratonkachi.searchspecificationflux.domain.mongo.repository.UserRepository;
+import it.usuratonkachi.searchspecificationflux.domain.mongo.service.SearchCriteriaMongoService;
+import it.usuratonkachi.searchspecificationflux.dto.request.SearchCriteriaRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,6 +22,17 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final ReactiveMongoTemplate reactiveMongoTemplate;
+
+    @Bean
+    @Lazy
+    private SearchCriteriaMongoService<User> userSearchCriteriaService(){
+        return new SearchCriteriaMongoService<>(User.class, reactiveMongoTemplate);
+    }
+
+    public Mono<Tuple3<Long, Pageable, Flux<User>>> search(SearchCriteriaRequestDto searchCriteriaRequestDto, Pageable pageable){
+        return userSearchCriteriaService().search(searchCriteriaRequestDto.getSearchCriteriaList(), pageable);
+    }
 
     public Mono<Tuple3<Long, Pageable, Flux<User>>> findByUsernameLike(String businessName, Pageable pageable) {
         return userRepository.countByUsernameRegex(businessName)

@@ -2,9 +2,9 @@ package it.usuratonkachi.searchspecificationflux.handler;
 
 import it.usuratonkachi.searchspecificationflux.dto.request.CompanyInsertRequestDto;
 import it.usuratonkachi.searchspecificationflux.dto.request.CompanyUpdateRequestDto;
+import it.usuratonkachi.searchspecificationflux.dto.request.SearchCriteriaRequestDto;
 import it.usuratonkachi.searchspecificationflux.mapper.CompanyMapper;
 import it.usuratonkachi.searchspecificationflux.service.CompanyJpaService;
-import it.usuratonkachi.searchspecificationflux.service.CompanyService;
 import it.usuratonkachi.searchspecificationflux.utils.ServerRequestUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
@@ -21,6 +21,18 @@ public class CompanyJpaHandler {
 
     private final CompanyMapper companyMapper;
     private final CompanyJpaService companyService;
+
+    public Mono<ServerResponse> search(ServerRequest serverRequest) {
+        return serverRequest.bodyToMono(SearchCriteriaRequestDto.class)
+                .zipWith(Mono.just(ServerRequestUtils.extractPageable(serverRequest)))
+                .flatMap(TupleUtils.function(companyService::search))
+                .flatMap(TupleUtils.function((count, pageable, companyFlux) ->
+                        companyFlux.map(companyMapper::mapperEntityToResponseDtoJpa)
+                                .collectList()
+                                .map(companyResponseDtos -> new PageImpl<>(companyResponseDtos, pageable, count))
+                ))
+                .flatMap(company -> ServerResponse.ok().body(BodyInserters.fromValue(company)));
+    }
 
     public Mono<ServerResponse> getCompanyByBusinessNameLike(ServerRequest serverRequest) {
         return Mono.just(serverRequest.pathVariable("businessname"))

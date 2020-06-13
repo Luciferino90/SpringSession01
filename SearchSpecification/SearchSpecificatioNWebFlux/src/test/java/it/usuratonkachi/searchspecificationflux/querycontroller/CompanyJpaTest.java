@@ -21,7 +21,7 @@ import java.util.Objects;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CompanyTest extends BaseTest {
+public class CompanyJpaTest extends BaseTest {
 
     @Test
     public void testDefaultPage(){
@@ -34,7 +34,7 @@ public class CompanyTest extends BaseTest {
 
         ParameterizedTypeReference<RestPageImpl<CompanyResponseDto>> type = new ParameterizedTypeReference<>() {};
 
-        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/mongo/search/company"), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
+        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/mysql/search/company"), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
         RestPageImpl<CompanyResponseDto> page = response.getBody();
         Assertions.assertEquals(20, Objects.requireNonNull(page).getNumberOfElements());
         Assertions.assertEquals(totalValue, page.getTotalElements());
@@ -55,7 +55,7 @@ public class CompanyTest extends BaseTest {
         int size = 5;
         pageNumber = 0;
 
-        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/mongo/search/company?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
+        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/mysql/search/company?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
         RestPageImpl<CompanyResponseDto> page = response.getBody();
         Assertions.assertEquals(size, Objects.requireNonNull(page).getNumberOfElements());
         Assertions.assertEquals(totalValue, page.getTotalElements());
@@ -77,7 +77,7 @@ public class CompanyTest extends BaseTest {
         int size = 5;
         pageNumber = 0;
 
-        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/mongo/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
+        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/mysql/search/company?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
         RestPageImpl<CompanyResponseDto> page = response.getBody();
         Assertions.assertEquals(size, Objects.requireNonNull(page).getNumberOfElements());
         Assertions.assertEquals(totalValue, page.getTotalElements());
@@ -99,7 +99,7 @@ public class CompanyTest extends BaseTest {
         int size = 5;
         pageNumber = 0;
 
-        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/mongo/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
+        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/mysql/search/company?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
         RestPageImpl<CompanyResponseDto> page = response.getBody();
         Assertions.assertEquals(1, Objects.requireNonNull(page).getNumberOfElements());
         Assertions.assertEquals(1, page.getTotalElements());
@@ -121,7 +121,7 @@ public class CompanyTest extends BaseTest {
         int size = 5;
         pageNumber = 0;
 
-        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/mongo/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
+        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/mysql/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
         RestPageImpl<CompanyResponseDto> page = response.getBody();
         Assertions.assertEquals(1, Objects.requireNonNull(page).getNumberOfElements());
         Assertions.assertEquals(1, page.getTotalElements());

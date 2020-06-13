@@ -1,7 +1,11 @@
 package it.usuratonkachi.searchspecificationflux.service;
 
 import it.usuratonkachi.searchspecificationflux.domain.mysql.entity.CompanyJpa;
+import it.usuratonkachi.searchspecificationflux.domain.mysql.service.SearchCriteriaJpaService;
+import it.usuratonkachi.searchspecificationflux.dto.request.SearchCriteriaRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -16,6 +20,17 @@ public class CompanyJpaService {
 
     private final CompanyJpaReactive companyJpaReactive;
 
+
+    @Bean
+    @Lazy
+    private SearchCriteriaJpaService<CompanyJpa> companySearchCriteriaJpaService(){
+        return new SearchCriteriaJpaService<>(CompanyJpa.class, companyJpaReactive.getCompanyRepository());
+    }
+
+    public Mono<Tuple3<Long, Pageable, Flux<CompanyJpa>>> search(SearchCriteriaRequestDto searchCriteriaRequestDto, Pageable pageable) {
+        return companySearchCriteriaJpaService().search(searchCriteriaRequestDto.getSearchCriteriaList(), pageable);
+    }
+
     public Mono<Tuple3<Long, Pageable, Flux<CompanyJpa>>> findByBusinessNameLike(String businessName, Pageable pageable) {
         return companyJpaReactive.findByBusinessnameLike(businessName, pageable);
     }
@@ -26,12 +41,12 @@ public class CompanyJpaService {
     }
 
     public Mono<CompanyJpa> create(CompanyJpa company) {
-        company.setCompanyid(UUID.randomUUID().toString());
+        company.setCompanyId(UUID.randomUUID().toString());
         return companyJpaReactive.save(company);
     }
 
     public Mono<CompanyJpa> update(CompanyJpa company) {
-        return findByCompanyId(company.getCompanyid())
+        return findByCompanyId(company.getCompanyId())
                 .doOnNext(oldcompany -> oldcompany
                         .setAddress(company.getAddress())
                         .setBusinessname(company.getBusinessname())

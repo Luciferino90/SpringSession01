@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface CompanyJpaRepository extends JpaRepository<CompanyJpa, String>, JpaSpecificationExecutor<CompanyJpa> {
 
-    Optional<CompanyJpa> findByCompanyid(String companyid);
+    Optional<CompanyJpa> findByCompanyId(String companyid);
     Page<CompanyJpa> findByBusinessnameLike(String businessName, Pageable pageable);
 
 }

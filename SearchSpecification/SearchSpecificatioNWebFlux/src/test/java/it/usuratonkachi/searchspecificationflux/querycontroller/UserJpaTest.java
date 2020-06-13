@@ -3,7 +3,7 @@ package it.usuratonkachi.searchspecificationflux.querycontroller;
 import it.usuratonkachi.searchcriteria.common.SearchCriteria;
 import it.usuratonkachi.searchcriteria.common.SearchOperator;
 import it.usuratonkachi.searchspecificationflux.dto.request.SearchCriteriaRequestDto;
-import it.usuratonkachi.searchspecificationflux.dto.response.CompanyResponseDto;
+import it.usuratonkachi.searchspecificationflux.dto.response.UserResponseDto;
 import it.usuratonkachi.searchspecificationflux.wrapper.RestPageImpl;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
@@ -21,21 +21,21 @@ import java.util.Objects;
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class CompanyTest extends BaseTest {
+public class UserJpaTest extends BaseTest {
 
     @Test
     public void testDefaultPage(){
         SearchCriteria sc = new SearchCriteria();
-        sc.setField("businessname");
+        sc.setField("username");
         sc.setOperator(SearchOperator.LIKE.toString());
-        sc.setValue("businessname");
+        sc.setValue("username");
         SearchCriteriaRequestDto searchCriteriaRequestDto = new SearchCriteriaRequestDto();
         searchCriteriaRequestDto.setSearchCriteriaList(List.of(sc));
 
-        ParameterizedTypeReference<RestPageImpl<CompanyResponseDto>> type = new ParameterizedTypeReference<>() {};
+        ParameterizedTypeReference<RestPageImpl<UserResponseDto>> type = new ParameterizedTypeReference<>() {};
 
-        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/mongo/search/company"), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
-        RestPageImpl<CompanyResponseDto> page = response.getBody();
+        ResponseEntity<RestPageImpl<UserResponseDto>> response = restTemplate.exchange(getUrl("/mysql/search/user"), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
+        RestPageImpl<UserResponseDto> page = response.getBody();
         Assertions.assertEquals(20, Objects.requireNonNull(page).getNumberOfElements());
         Assertions.assertEquals(totalValue, page.getTotalElements());
     }
@@ -43,20 +43,20 @@ public class CompanyTest extends BaseTest {
     @Test
     public void testPageSmall(){
         SearchCriteria sc = new SearchCriteria();
-        sc.setField("businessname");
+        sc.setField("username");
         sc.setOperator(SearchOperator.LIKE.toString());
-        sc.setValue("businessname");
+        sc.setValue("username");
         SearchCriteriaRequestDto searchCriteriaRequestDto = new SearchCriteriaRequestDto();
         searchCriteriaRequestDto.setSearchCriteriaList(List.of(sc));
 
-        ParameterizedTypeReference<RestPageImpl<CompanyResponseDto>> type = new ParameterizedTypeReference<>() {};
+        ParameterizedTypeReference<RestPageImpl<UserResponseDto>> type = new ParameterizedTypeReference<>() {};
 
         int pageNumber;
         int size = 5;
         pageNumber = 0;
 
-        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/mongo/search/company?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
-        RestPageImpl<CompanyResponseDto> page = response.getBody();
+        ResponseEntity<RestPageImpl<UserResponseDto>> response = restTemplate.exchange(getUrl("/mysql/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
+        RestPageImpl<UserResponseDto> page = response.getBody();
         Assertions.assertEquals(size, Objects.requireNonNull(page).getNumberOfElements());
         Assertions.assertEquals(totalValue, page.getTotalElements());
     }
@@ -71,14 +71,14 @@ public class CompanyTest extends BaseTest {
         SearchCriteriaRequestDto searchCriteriaRequestDto = new SearchCriteriaRequestDto();
         searchCriteriaRequestDto.setSearchCriteriaList(List.of(sc));
 
-        ParameterizedTypeReference<RestPageImpl<CompanyResponseDto>> type = new ParameterizedTypeReference<>() {};
+        ParameterizedTypeReference<RestPageImpl<UserResponseDto>> type = new ParameterizedTypeReference<>() {};
 
         int pageNumber;
         int size = 5;
         pageNumber = 0;
 
-        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/mongo/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
-        RestPageImpl<CompanyResponseDto> page = response.getBody();
+        ResponseEntity<RestPageImpl<UserResponseDto>> response = restTemplate.exchange(getUrl("/mysql/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
+        RestPageImpl<UserResponseDto> page = response.getBody();
         Assertions.assertEquals(size, Objects.requireNonNull(page).getNumberOfElements());
         Assertions.assertEquals(totalValue, page.getTotalElements());
     }
@@ -93,14 +93,14 @@ public class CompanyTest extends BaseTest {
         SearchCriteriaRequestDto searchCriteriaRequestDto = new SearchCriteriaRequestDto();
         searchCriteriaRequestDto.setSearchCriteriaList(List.of(sc));
 
-        ParameterizedTypeReference<RestPageImpl<CompanyResponseDto>> type = new ParameterizedTypeReference<>() {};
+        ParameterizedTypeReference<RestPageImpl<UserResponseDto>> type = new ParameterizedTypeReference<>() {};
 
         int pageNumber;
         int size = 5;
         pageNumber = 0;
 
-        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/mongo/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
-        RestPageImpl<CompanyResponseDto> page = response.getBody();
+        ResponseEntity<RestPageImpl<UserResponseDto>> response = restTemplate.exchange(getUrl("/mysql/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
+        RestPageImpl<UserResponseDto> page = response.getBody();
         Assertions.assertEquals(1, Objects.requireNonNull(page).getNumberOfElements());
         Assertions.assertEquals(1, page.getTotalElements());
     }
@@ -115,15 +115,16 @@ public class CompanyTest extends BaseTest {
         SearchCriteriaRequestDto searchCriteriaRequestDto = new SearchCriteriaRequestDto();
         searchCriteriaRequestDto.setSearchCriteriaList(List.of(sc));
 
-        ParameterizedTypeReference<RestPageImpl<CompanyResponseDto>> type = new ParameterizedTypeReference<>() {};
+        ParameterizedTypeReference<RestPageImpl<UserResponseDto>> type = new ParameterizedTypeReference<>() {};
 
         int pageNumber;
         int size = 5;
         pageNumber = 0;
 
-        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/mongo/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
-        RestPageImpl<CompanyResponseDto> page = response.getBody();
+        ResponseEntity<RestPageImpl<UserResponseDto>> response = restTemplate.exchange(getUrl("/mysql/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
+        RestPageImpl<UserResponseDto> page = response.getBody();
         Assertions.assertEquals(1, Objects.requireNonNull(page).getNumberOfElements());
         Assertions.assertEquals(1, page.getTotalElements());
     }
+
 }

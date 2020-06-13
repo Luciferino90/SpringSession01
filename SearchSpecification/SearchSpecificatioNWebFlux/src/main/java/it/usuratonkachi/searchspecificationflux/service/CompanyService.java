@@ -2,8 +2,13 @@ package it.usuratonkachi.searchspecificationflux.service;
 
 import it.usuratonkachi.searchspecificationflux.domain.mongo.entity.Company;
 import it.usuratonkachi.searchspecificationflux.domain.mongo.repository.CompanyRepository;
+import it.usuratonkachi.searchspecificationflux.domain.mongo.service.SearchCriteriaMongoService;
+import it.usuratonkachi.searchspecificationflux.dto.request.SearchCriteriaRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -17,6 +22,17 @@ import java.util.UUID;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final ReactiveMongoTemplate reactiveMongoTemplate;
+
+    @Bean
+    @Lazy
+    private SearchCriteriaMongoService<Company> companySearchCriteriaService(){
+        return new SearchCriteriaMongoService<>(Company.class, reactiveMongoTemplate);
+    }
+
+    public Mono<Tuple3<Long, Pageable, Flux<Company>>> search(SearchCriteriaRequestDto searchCriteriaRequestDto, Pageable pageable){
+        return companySearchCriteriaService().search(searchCriteriaRequestDto.getSearchCriteriaList(), pageable);
+    }
 
     public Mono<Tuple3<Long, Pageable, Flux<Company>>> findByBusinessNameLike(String businessName, Pageable pageable) {
         return companyRepository.countByBusinessnameRegex(businessName)
