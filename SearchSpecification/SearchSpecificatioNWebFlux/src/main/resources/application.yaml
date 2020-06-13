@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: mongomvc
+
+  data:
+    mongodb:
+      port: 27018
+
+server:
+  port: 8080
