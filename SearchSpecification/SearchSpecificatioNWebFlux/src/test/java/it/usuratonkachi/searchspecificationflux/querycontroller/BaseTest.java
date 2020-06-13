@@ -13,10 +13,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Date;
 import java.util.stream.IntStream;
@@ -35,7 +34,7 @@ public class BaseTest {
     @LocalServerPort
     private int port;
     private static final String url = "http://localhost";
-    protected static final RestTemplate restTemplate = new RestTemplateBuilder().build();
+    protected static final WebClient webClient = WebClient.builder().build();
     protected static int totalValue = 100;
 
     protected String getUrl(String uri){
@@ -56,7 +55,7 @@ public class BaseTest {
                     userInsertRequestDto.setDoubleid((long) i);
                     return userInsertRequestDto;
                 })
-                .forEach(user -> restTemplate.postForEntity(getUrl("/user/insert"), user, UserResponseDto.class));
+                .forEach(user -> webClient.put().uri(getUrl("/mongo/user/insert")).body(user, UserResponseDto.class).exchange().block());
         IntStream.rangeClosed(1, totalValue)
                 .mapToObj(i -> {
                     CompanyInsertRequestDto companyInsertRequestDto = new CompanyInsertRequestDto();
@@ -69,13 +68,43 @@ public class BaseTest {
                     companyInsertRequestDto.setDoubleid((long) i);
                     return companyInsertRequestDto;
                 })
-                .forEach(user -> restTemplate.postForEntity(getUrl("/company/insert"), user, UserResponseDto.class));
+                .forEach(company -> webClient.put().uri(getUrl("/mongo/company/insert")).body(company, UserResponseDto.class).exchange().block());
+
+
+        IntStream.rangeClosed(1, totalValue)
+                .mapToObj(i -> {
+                    UserInsertRequestDto userInsertRequestDto = new UserInsertRequestDto();
+                    userInsertRequestDto.setUsername("username_" + i);
+                    userInsertRequestDto.setCompanyid("company_" + i);
+                    userInsertRequestDto.setFirstname("firstname_" + i);
+                    userInsertRequestDto.setLastname("lastName_" + i);
+                    userInsertRequestDto.setCreateddate(new Date());
+                    userInsertRequestDto.setSequentialid(i);
+                    userInsertRequestDto.setDoubleid((long) i);
+                    return userInsertRequestDto;
+                })
+                .forEach(user -> webClient.put().uri(getUrl("/mysql/user/insert")).body(user, UserResponseDto.class).exchange().block());
+        IntStream.rangeClosed(1, totalValue)
+                .mapToObj(i -> {
+                    CompanyInsertRequestDto companyInsertRequestDto = new CompanyInsertRequestDto();
+                    companyInsertRequestDto.setBusinessname("businessname_" + i);
+                    companyInsertRequestDto.setAddress("address_" + i);
+                    companyInsertRequestDto.setCap("cap_" + i);
+                    companyInsertRequestDto.setPiva("piva_" + i);
+                    companyInsertRequestDto.setCreateddate(new Date());
+                    companyInsertRequestDto.setSequentialid(i);
+                    companyInsertRequestDto.setDoubleid((long) i);
+                    return companyInsertRequestDto;
+                })
+                .forEach(company -> webClient.put().uri(getUrl("/mysql/company/insert")).body(company, UserResponseDto.class).exchange().block());
     }
 
     @AfterEach
     private void destroy() {
-        companyRepository.deleteAll();
-        userRepository.deleteAll();
+        companyRepository.deleteAll().block();
+        userRepository.deleteAll().block();
+        companyJpaRepository.deleteAll();
+        userJpaRepository.deleteAll();
     }
 
 }

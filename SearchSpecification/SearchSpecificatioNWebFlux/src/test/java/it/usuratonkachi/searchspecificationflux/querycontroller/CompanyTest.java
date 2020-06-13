@@ -34,7 +34,7 @@ public class CompanyTest extends BaseTest {
 
         ParameterizedTypeReference<RestPageImpl<CompanyResponseDto>> type = new ParameterizedTypeReference<>() {};
 
-        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/search/company"), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
+        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = webClient.exchange(getUrl("/search/company"), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
         RestPageImpl<CompanyResponseDto> page = response.getBody();
         Assertions.assertEquals(20, Objects.requireNonNull(page).getNumberOfElements());
         Assertions.assertEquals(totalValue, page.getTotalElements());
@@ -55,7 +55,7 @@ public class CompanyTest extends BaseTest {
         int size = 5;
         pageNumber = 0;
 
-        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/search/company?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
+        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = webClient.exchange(getUrl("/search/company?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
         RestPageImpl<CompanyResponseDto> page = response.getBody();
         Assertions.assertEquals(size, Objects.requireNonNull(page).getNumberOfElements());
         Assertions.assertEquals(totalValue, page.getTotalElements());
@@ -77,7 +77,7 @@ public class CompanyTest extends BaseTest {
         int size = 5;
         pageNumber = 0;
 
-        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
+        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = webClient.exchange(getUrl("/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
         RestPageImpl<CompanyResponseDto> page = response.getBody();
         Assertions.assertEquals(size, Objects.requireNonNull(page).getNumberOfElements());
         Assertions.assertEquals(totalValue, page.getTotalElements());
@@ -99,7 +99,7 @@ public class CompanyTest extends BaseTest {
         int size = 5;
         pageNumber = 0;
 
-        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
+        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = webClient.exchange(getUrl("/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
         RestPageImpl<CompanyResponseDto> page = response.getBody();
         Assertions.assertEquals(1, Objects.requireNonNull(page).getNumberOfElements());
         Assertions.assertEquals(1, page.getTotalElements());
@@ -121,7 +121,7 @@ public class CompanyTest extends BaseTest {
         int size = 5;
         pageNumber = 0;
 
-        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
+        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = webClient.exchange(getUrl("/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
         RestPageImpl<CompanyResponseDto> page = response.getBody();
         Assertions.assertEquals(1, Objects.requireNonNull(page).getNumberOfElements());
         Assertions.assertEquals(1, page.getTotalElements());
