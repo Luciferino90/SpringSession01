@@ -20,6 +20,7 @@
 		<lombok.version>1.18.12</lombok.version>
 		<reactor-extra.version>3.3.3.RELEASE</reactor-extra.version>
 		<validation-api.version>2.0.1.Final</validation-api.version>
+		<searchcriteria.version>0.0.3-reactive</searchcriteria.version>
 	</properties>
 
 	<repositories>
@@ -30,15 +31,10 @@
 	</repositories>
 
 	<dependencies>
-		<!--dependency>
+		<dependency>
 			<groupId>com.github.Luciferino90</groupId>
 			<artifactId>searchcriteria</artifactId>
-			<version>0.0.3-reactive</version>
-		</dependency-->
-		<dependency>
-			<groupId>it.usuratonkachi</groupId>
-			<artifactId>searchcriteria</artifactId>
-			<version>0.0.3-reactive</version>
+			<version>${searchcriteria.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
