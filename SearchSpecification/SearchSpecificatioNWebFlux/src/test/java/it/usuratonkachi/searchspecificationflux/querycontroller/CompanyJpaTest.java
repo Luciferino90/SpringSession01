@@ -121,7 +121,7 @@ public class CompanyJpaTest extends BaseTest {
         int size = 5;
         pageNumber = 0;
 
-        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/mysql/search/user?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
+        ResponseEntity<RestPageImpl<CompanyResponseDto>> response = restTemplate.exchange(getUrl("/mysql/search/company?page="+pageNumber+"&size="+size), HttpMethod.POST, new HttpEntity(searchCriteriaRequestDto), type);
         RestPageImpl<CompanyResponseDto> page = response.getBody();
         Assertions.assertEquals(1, Objects.requireNonNull(page).getNumberOfElements());
         Assertions.assertEquals(1, page.getTotalElements());
