@@ -23,10 +23,8 @@ public class CompanyJpaReactive {
         return Mono.justOrEmpty(companyRepository.findByCompanyId(companyid));
     }
 
-    public Mono<Tuple3<Long, Pageable, Flux<CompanyJpa>>> findByBusinessnameLike(String businessName, Pageable pageable){
-        Page<CompanyJpa> companies = companyRepository.findByBusinessnameLike(businessName, pageable);
-        Long count = companies.getTotalElements();
-        return Mono.just(Tuples.of(count, pageable, Flux.fromIterable(companies)));
+    public Mono<Page<CompanyJpa>> findByBusinessnameLike(String businessName, Pageable pageable){
+        return Mono.just(companyRepository.findByBusinessnameLike(businessName, pageable));
     }
 
     public Mono<CompanyJpa> save(CompanyJpa companyJpa) {
