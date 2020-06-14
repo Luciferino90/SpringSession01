@@ -26,11 +26,7 @@ public class CompanyJpaHandler {
         return serverRequest.bodyToMono(SearchCriteriaRequestDto.class)
                 .zipWith(Mono.just(ServerRequestUtils.extractPageable(serverRequest)))
                 .flatMap(TupleUtils.function(companyService::search))
-                .flatMap(TupleUtils.function((count, pageable, companyFlux) ->
-                        companyFlux.map(companyMapper::mapperEntityToResponseDtoJpa)
-                                .collectList()
-                                .map(companyResponseDtos -> new PageImpl<>(companyResponseDtos, pageable, count))
-                ))
+                .map(companyJpas -> companyJpas.map(companyMapper::mapperEntityToResponseDtoJpa))
                 .flatMap(company -> ServerResponse.ok().body(BodyInserters.fromValue(company)));
     }
 
@@ -38,11 +34,7 @@ public class CompanyJpaHandler {
         return Mono.just(serverRequest.pathVariable("businessname"))
                 .zipWith(Mono.just(ServerRequestUtils.extractPageable(serverRequest)))
                 .flatMap(TupleUtils.function(companyService::findByBusinessNameLike))
-                .flatMap(TupleUtils.function((count, pageable, companyFlux) ->
-                        companyFlux.map(companyMapper::mapperEntityToResponseDtoJpa)
-                                .collectList()
-                                .map(companyResponseDtos -> new PageImpl<>(companyResponseDtos, pageable, count))
-                ))
+                .map(companyJpas -> companyJpas.map(companyMapper::mapperEntityToResponseDtoJpa))
                 .flatMap(company -> ServerResponse.ok().body(BodyInserters.fromValue(company)));
     }
 

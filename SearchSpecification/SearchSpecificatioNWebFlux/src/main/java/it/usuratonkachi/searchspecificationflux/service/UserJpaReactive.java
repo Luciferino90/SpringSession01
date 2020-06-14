@@ -23,10 +23,8 @@ public class UserJpaReactive {
         return Mono.justOrEmpty(userJpaRepository.findByUserId(userid));
     }
 
-    public Mono<Tuple3<Long, Pageable, Flux<UserJpa>>> findByUsernameLike(String username, Pageable pageable){
-        Page<UserJpa> companies = userJpaRepository.findByUsernameLike(username, pageable);
-        Long count = companies.getTotalElements();
-        return Mono.just(Tuples.of(count, pageable, Flux.fromIterable(companies)));
+    public Mono<Page<UserJpa>> findByUsernameLike(String username, Pageable pageable){
+        return Mono.just(userJpaRepository.findByUsernameLike(username, pageable));
     }
 
     public Mono<UserJpa> save(UserJpa userJpa) {

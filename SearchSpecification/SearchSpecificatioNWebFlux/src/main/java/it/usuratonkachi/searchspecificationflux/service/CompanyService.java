@@ -31,13 +31,15 @@ public class CompanyService {
     }
 
     public Mono<Tuple3<Long, Pageable, Flux<Company>>> search(SearchCriteriaRequestDto searchCriteriaRequestDto, Pageable pageable){
-        return companySearchCriteriaService().search(searchCriteriaRequestDto.getSearchCriteriaList(), pageable);
+        return companySearchCriteriaService().search(searchCriteriaRequestDto.getSearchCriteriaList(), pageable)
+                .switchIfEmpty(Mono.defer(() -> Mono.just(Tuples.of(0L, pageable, Flux.empty()))));
     }
 
     public Mono<Tuple3<Long, Pageable, Flux<Company>>> findByBusinessNameLike(String businessName, Pageable pageable) {
         return companyRepository.countByBusinessnameRegex(businessName)
                 .filter(count -> count > 0)
-                .map(count -> Tuples.of(count, pageable, companyRepository.findByBusinessnameRegex(businessName, pageable)));
+                .map(count -> Tuples.of(count, pageable, companyRepository.findByBusinessnameRegex(businessName, pageable)))
+                .switchIfEmpty(Mono.defer(() -> Mono.just(Tuples.of(0L, pageable, Flux.empty()))));
     }
 
     public Mono<Company> findByCompanyId(String companyid) {

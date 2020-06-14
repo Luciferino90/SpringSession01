@@ -22,10 +22,9 @@ public class SearchCriteriaJpaService<T> {
     private final JpaSpecificationExecutor<T> repository;
 
     @SuppressWarnings("unchecked")
-    public Mono<Tuple3<Long, Pageable, Flux<T>>> search(List<SearchCriteria> searchCriterias, Pageable page) {
-        Specification<T> query = (Specification<T>) new QueryBuilder<>(clazz).specificationBuilder(ServerRequestUtils.searchCriteriaConverter(searchCriterias));
-        Page<T> res = repository.findAll(query, page);
-        return Mono.just(Tuples.of(res.getTotalElements(), page, Flux.fromIterable(res)));
+    public Mono<Page<T>> search(List<SearchCriteria> searchCriterias, Pageable page) {
+        return Mono.just((Specification<T>) new QueryBuilder<>(clazz).specificationBuilder(ServerRequestUtils.searchCriteriaConverter(searchCriterias)))
+                .map(query -> repository.findAll(query, page));
     }
 
 }

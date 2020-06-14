@@ -6,6 +6,7 @@ import it.usuratonkachi.searchspecificationflux.dto.request.SearchCriteriaReques
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -27,11 +28,11 @@ public class CompanyJpaService {
         return new SearchCriteriaJpaService<>(CompanyJpa.class, companyJpaReactive.getCompanyRepository());
     }
 
-    public Mono<Tuple3<Long, Pageable, Flux<CompanyJpa>>> search(SearchCriteriaRequestDto searchCriteriaRequestDto, Pageable pageable) {
+    public Mono<Page<CompanyJpa>> search(SearchCriteriaRequestDto searchCriteriaRequestDto, Pageable pageable) {
         return companySearchCriteriaJpaService().search(searchCriteriaRequestDto.getSearchCriteriaList(), pageable);
     }
 
-    public Mono<Tuple3<Long, Pageable, Flux<CompanyJpa>>> findByBusinessNameLike(String businessName, Pageable pageable) {
+    public Mono<Page<CompanyJpa>> findByBusinessNameLike(String businessName, Pageable pageable) {
         return companyJpaReactive.findByBusinessnameLike(businessName, pageable);
     }
 

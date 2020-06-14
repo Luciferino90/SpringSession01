@@ -26,24 +26,16 @@ public class UserJpaHandler {
         return serverRequest.bodyToMono(SearchCriteriaRequestDto.class)
                 .zipWith(Mono.just(ServerRequestUtils.extractPageable(serverRequest)))
                 .flatMap(TupleUtils.function(userService::search))
-                .flatMap(TupleUtils.function((count, pageable, companyFlux) ->
-                        companyFlux.map(userMapper::mapperEntityToResponseDtoJpa)
-                                .collectList()
-                                .map(companyResponseDtos -> new PageImpl<>(companyResponseDtos, pageable, count))
-                ))
-                .flatMap(company -> ServerResponse.ok().body(BodyInserters.fromValue(company)));
+                .map(userJpas -> userJpas.map(userMapper::mapperEntityToResponseDtoJpa))
+                .flatMap(users -> ServerResponse.ok().body(BodyInserters.fromValue(users)));
     }
 
     public Mono<ServerResponse> getUserByUsernameLike(ServerRequest serverRequest) {
         return Mono.just(serverRequest.pathVariable("username"))
                 .zipWith(Mono.just(ServerRequestUtils.extractPageable(serverRequest)))
                 .flatMap(TupleUtils.function(userService::findByUsernameLike))
-                .flatMap(TupleUtils.function((count, pageable, userFlux) ->
-                        userFlux.map(userMapper::mapperEntityToResponseDtoJpa)
-                                .collectList()
-                                .map(userResponseDtos -> new PageImpl<>(userResponseDtos, pageable, count))
-                ))
-                .flatMap(company -> ServerResponse.ok().body(BodyInserters.fromValue(company)));
+                .map(userJpas -> userJpas.map(userMapper::mapperEntityToResponseDtoJpa))
+                .flatMap(user -> ServerResponse.ok().body(BodyInserters.fromValue(user)));
     }
 
     public Mono<ServerResponse> getUser(ServerRequest serverRequest) {
